@@ -3,3 +3,5 @@ branch = True
 cover_pylib = False
 include =
     polls/*
+    mysite/*
+    manage.py
