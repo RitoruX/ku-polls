@@ -1,7 +1,5 @@
 [run]
 branch = True
 cover_pylib = False
-include =
-    polls/*
-    mysite/*
-    manage.py
+omit =
+    */site-packages/*
