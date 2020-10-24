@@ -3,8 +3,8 @@ import datetime
 from django.test import TestCase
 from django.utils import timezone
 from django.urls import reverse
-
 from .models import Question
+
 
 def create_question(question_text, days):
     """
@@ -16,6 +16,7 @@ def create_question(question_text, days):
     start_date = timezone.now() + datetime.timedelta(days=days)
     end_date = timezone.now() + datetime.timedelta(seconds=5) + + datetime.timedelta(days=days)
     return Question.objects.create(question_text=question_text, pub_date=start_date, end_date=end_date)
+
 
 class QuestionIndexViewTests(TestCase):
     def test_no_questions(self):
@@ -73,6 +74,7 @@ class QuestionIndexViewTests(TestCase):
             response.context['latest_question_list'],
             ['<Question: Past question 2.>', '<Question: Past question 1.>']
         )
+
 
 class QuestionModelTests(TestCase):
 

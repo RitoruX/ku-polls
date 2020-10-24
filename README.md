@@ -1,3 +1,6 @@
+[![Build Status](https://travis-ci.com/RitoruX/ku-polls.svg?branch=master)](https://travis-ci.com/RitoruX/ku-polls)
+[![codecov](https://codecov.io/gh/RitoruX/ku-polls/branch/master/graph/badge.svg)](https://codecov.io/gh/RitoruX/ku-polls)
+
 # KU - Polls
 Application for conduction poll/survey.
 ## Document
