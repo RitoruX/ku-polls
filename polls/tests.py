@@ -123,7 +123,7 @@ class QuestionModelTests(TestCase):
         """
         Question in period should already be published.
         """
-        now_question = create_question(question_text='Now Question.', days = 0)
+        now_question = create_question(question_text='Now Question.', days=0)
         self.assertTrue(now_question.is_published())
 
     def test_question_in_period_can_vote(self):

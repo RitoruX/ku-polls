@@ -10,6 +10,7 @@ class Question(models.Model):
     question_text = models.CharField(max_length=200)
     pub_date = models.DateTimeField('date published')
     end_date = models.DateTimeField('date closed')
+
     def __str__(self):
         return self.question_text
 
@@ -22,9 +23,11 @@ class Question(models.Model):
         """
         now = timezone.now()
         return now - datetime.timedelta(days=1) <= self.pub_date <= now
-    def is_published(self) :
+        
+    def is_published(self):
         return timezone.now() > self.pub_date
-    def can_vote(self) :
+
+    def can_vote(self):
         return self.end_date > timezone.now() > self.pub_date
     was_published_recently.admin_order_field = 'pub_date'
     was_published_recently.boolean = True

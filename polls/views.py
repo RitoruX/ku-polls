@@ -59,9 +59,8 @@ def vote(request, question_id):
         return HttpResponseRedirect(reverse('polls:results', args=(question.id,)))
 
 def vote_for_poll(request, question_id):
-    question = get_object_or_404(Question, pk = question_id)
+    question = get_object_or_404(Question, pk=question_id)
     if not question.can_vote():
         messages.error(request, f"This poll isn't in vote period.")
         return redirect('polls:index')
-    return render(request, 'polls/detail.html', {
-            'question': question})
+    return render(request, 'polls/detail.html', {'question': question})
