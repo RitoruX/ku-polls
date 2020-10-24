@@ -21,12 +21,20 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 MESSAGE_LEVEL = 10    # show debug messages and higher
 
-env = environ.Env()
-env.read_env()
+# env = environ.Env()
+# env.read_env()
 
-SECRET_KEY = env('SECRET_KEY', default='dumb-secret-key')
-DEBUG = env.bool('DEBUG', default=False)
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost'] if DEBUG==False else []
+# SECRET_KEY = env('SECRET_KEY', default='dumb-secret-key')
+# DEBUG = env.bool('DEBUG', default=False)
+# ALLOWED_HOSTS = ['127.0.0.1', 'localhost'] if DEBUG==False else []
+
+# SECURITY WARNING: keep the secret key used in production secret!
+SECRET_KEY = 'q5%w9ffdhn^%h)iwjtnfn*6=ui#g(m$xrwr7c44_-n$%l=w0hm'
+MESSAGE_LEVEL = 10    # show debug messages and higher
+
+# SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = True
+ALLOWED_HOSTS = []
 
 DATABASES = {
     'default': {
