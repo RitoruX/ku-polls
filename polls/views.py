@@ -20,10 +20,6 @@ class IndexView(generic.ListView):
         published in the future).
         """
         return Question.objects.filter(pub_date__lte=timezone.now()).order_by('-pub_date')[:]
-<<<<<<< HEAD
-
-=======
->>>>>>> 3f01680f97fabf245a06a804d510d161b1cdc329
 
 class DetailView(generic.DetailView):
     """Class show Detail page preview."""
@@ -66,9 +62,4 @@ def vote_for_poll(request, question_id):
     if not question.can_vote():
         messages.error(request, f"This poll isn't in vote period.")
         return redirect('polls:index')
-<<<<<<< HEAD
     return render(request, 'polls/detail.html', {'question': question})
-=======
-    return render(request, 'polls/detail.html', {
-            'question': question})
->>>>>>> 3f01680f97fabf245a06a804d510d161b1cdc329
