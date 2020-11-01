@@ -4,8 +4,12 @@ from django.urls import reverse
 from django.views import generic
 from django.utils import timezone
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
+# from django.utils.decorators import method_decorator
+# from django.contrib.auth.forms import UserCreationForm
 
-from .models import Choice, Question
+from .models import Choice, Question, Vote
 
 
 class IndexView(generic.ListView):
@@ -38,9 +42,11 @@ class ResultsView(generic.DetailView):
     model = Question
     template_name = 'polls/results.html'
 
+@login_required
 def vote(request, question_id):
     """Check selected vote choice and update vote score."""
     question = get_object_or_404(Question, pk=question_id)
+    user = request.user
     try:
         selected_choice = question.choice_set.get(pk=request.POST['choice'])
     except (KeyError, Choice.DoesNotExist):
@@ -50,8 +56,12 @@ def vote(request, question_id):
             'error_message': "You didn't select a choice.",
         })
     else:
-        selected_choice.votes += 1
-        selected_choice.save()
+        if question.vote_set.filter(user=user).exists():
+            selected_vote = question.vote_set.get(user=user)
+            selected_vote.choice = selected_choice
+            selected_vote.save()
+        else:
+            Vote.objects.update_or_create(question=question, choice=selected_choice, user=request.user)
         # Always return an HttpResponseRedirect after successfully dealing
         # with POST data. This prevents data from being posted twice if a
         # user hits the Back button.
@@ -63,3 +73,7 @@ def vote_for_poll(request, question_id):
         messages.error(request, f"This poll isn't in vote period.")
         return redirect('polls:index')
     return render(request, 'polls/detail.html', {'question': question})
+
+# def signup(request):
+#     form = UserCreationForm()
+#     return render(request, 'registration/signup.html', {'form': form})
