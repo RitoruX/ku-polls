@@ -5,12 +5,18 @@ from django.views import generic
 from django.utils import timezone
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User
+from django.contrib.auth import user_logged_out, user_logged_in, user_login_failed
+from django.dispatch import receiver
 # from django.utils.decorators import method_decorator
 # from django.contrib.auth.forms import UserCreationForm
 
+from mysite.settings import LOGGING
+import logging.config
+
 from .models import Choice, Question, Vote
 
+logging.config.dictConfig(LOGGING)
+logger = logging.getLogger("polls")
 
 class IndexView(generic.ListView):
     """Class show Index page preview."""
@@ -73,6 +79,28 @@ def vote_for_poll(request, question_id):
         messages.error(request, f"This poll isn't in vote period.")
         return redirect('polls:index')
     return render(request, 'polls/detail.html', {'question': question})
+
+def get_client_ip(request):
+    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+    if x_forwarded_for:
+        ip = x_forwarded_for.split(',')[0]
+    else:
+        ip = request.META.get('REMOTE_ADDR')
+    return ip
+
+@receiver(user_logged_in)
+def logged_in_logging(sender, request, user, **kwargs):
+    logger.info(f"{user.username} has logged in to {get_client_ip(request)}")
+
+
+@receiver(user_logged_out)
+def logged_out_logging(sender, request, user, **kwargs):
+    logger.info(f"{user.username} has logged out from {get_client_ip(request)} ")
+
+
+@receiver(user_login_failed)
+def logged_in_failed_logging(sender, request, credentials, **kwargs):
+    logger.warning(f"{request.POST['username']} has login failed with {get_client_ip(request)}")
 
 # def signup(request):
 #     form = UserCreationForm()
